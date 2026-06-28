@@ -1,12 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React, { useState } from 'react'
 
-export default class _layout extends Component {
-  render() {
-    return (
-      <View>
-        <Text>_layout</Text>
-      </View>
-    )
-  }
+const authlayout = () => {
+  return (
+    <View>
+      <Text>authlayout</Text>
+    </View>
+  )
 }
+
+export default authlayout
