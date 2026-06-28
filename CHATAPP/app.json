@@ -4,26 +4,27 @@
     "slug": "CHATAPP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/chatapp.png",
     "scheme": "chatapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/images/chatapp.png",
       "bundleIdentifier": "com.anonymous.CHATAPP"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/chatapp.png",
+        "backgroundImage": "./assets/images/chatapp.png",
+        "monochromeImage": "./assets/images/chatapp.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.CHATAPP"
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/chatapp.png",
+      "bundler": "metro"
     },
     "plugins": [
       "expo-router",
@@ -32,7 +33,7 @@
         {
           "backgroundColor": "#208AEF",
           "android": {
-            "image": "./assets/images/splash-icon.png",
+            "image": "./assets/images/chatapp.png",
             "imageWidth": 76
           }
         }
