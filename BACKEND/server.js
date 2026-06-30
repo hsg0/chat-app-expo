@@ -21,8 +21,10 @@ app.use(
     credentials: true,
   })
 );
-
+// Middleware to parse JSON request bodies
 app.use(express.json());
+//-----------------------------------------------------------------
+// Routes
 
 app.use("/api/auth", authRouter);
 
