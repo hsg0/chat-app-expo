@@ -12,6 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
+import StoriesBar from "../../components/storiesBar.jsx";
+
 const mockConversations = [
   {
     id: "1",
@@ -36,39 +38,19 @@ const mockConversations = [
   },
 ];
 
-const mockStories = [
-  {
-    id: "story-1",
-    name: "You",
-  },
-  {
-    id: "story-2",
-    name: "Alex",
-  },
-  {
-    id: "story-3",
-    name: "Maya",
-  },
-  {
-    id: "story-4",
-    name: "Sam",
-  },
-];
-
 const MessagesIndex = () => {
   const router = useRouter();
 
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedStory, setSelectedStory] = useState(null);
   const [search, setSearch] = useState("");
 
   const fetchConversations = async () => {
     try {
       setLoading(true);
 
-      // Later this will call your backend:
-      // const response = await axios.get(`${API_URL}/api/conversations`);
+      // Later this will call your backend with axios:
+      // const response = await apiClient.get("/api/conversations");
       // setConversations(response.data.conversations);
 
       setConversations(mockConversations);
@@ -112,6 +94,7 @@ const MessagesIndex = () => {
           <View style={styles.header}>
             <View>
               <Text style={styles.title}>Messages</Text>
+
               <Text style={styles.subtitle}>
                 {loading
                   ? "Loading conversations..."
@@ -138,39 +121,7 @@ const MessagesIndex = () => {
           {/* Stories */}
           <View style={styles.storiesSection}>
             <Text style={styles.sectionTitle}>Stories</Text>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.storiesRow}
-            >
-              {mockStories.map((story) => {
-                const isSelected = selectedStory === story.id;
-
-                return (
-                  <Pressable
-                    key={story.id}
-                    style={styles.storyItem}
-                    onPress={() => setSelectedStory(story.id)}
-                  >
-                    <View
-                      style={[
-                        styles.storyCircle,
-                        isSelected && styles.storyCircleSelected,
-                      ]}
-                    >
-                      <Text style={styles.storyInitial}>
-                        {story.name.charAt(0).toUpperCase()}
-                      </Text>
-                    </View>
-
-                    <Text numberOfLines={1} style={styles.storyName}>
-                      {story.name}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
+            <StoriesBar />
           </View>
 
           {/* Divider */}
@@ -298,44 +249,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#111827",
     marginBottom: 12,
-  },
-
-  storiesRow: {
-    paddingRight: 20,
-  },
-
-  storyItem: {
-    width: 74,
-    alignItems: "center",
-    marginRight: 12,
-  },
-
-  storyCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    borderWidth: 3,
-    borderColor: "#208AEF",
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  storyCircleSelected: {
-    borderColor: "#16A34A",
-  },
-
-  storyInitial: {
-    fontSize: 22,
-    fontWeight: "900",
-    color: "#111827",
-  },
-
-  storyName: {
-    marginTop: 6,
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#111827",
   },
 
   divider: {

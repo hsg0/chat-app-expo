@@ -14,6 +14,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import chatapp from "../../../assets/images/chatapp.png";
 import { Button } from "expo-router/build/react-navigation";
+import { loginUserApi, registerUserApi } from "../../api/authApi";
+import { saveToken } from "../../api/authStorage";
 
 const logo = chatapp;
 
@@ -56,110 +58,96 @@ const AuthIndex = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = email.trim().toLowerCase();
 
-      if (!cleanEmail) {
-        setError("Please enter your email.");
-        return;
-      }
-
-      if (!password) {
-        setError("Please enter your password.");
-        return;
-      }
-
-      console.log("Logging in user:", {
-        email: cleanEmail,
-        password,
-      });
-
-      // Later this will call your backend:
-      // POST http://localhost:5020/api/auth/login
-
-      // Example future payload:
-      // const response = await fetch(`${API_URL}/api/auth/login`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     email: cleanEmail,
-      //     password,
-      //   }),
-      // });
-
-      router.replace("/(tabs)");
-    } catch (error) {
-      console.log("Login error:", error);
-      setError("Something went wrong while logging in.");
-    } finally {
-      setLoading(false);
+    if (!cleanEmail) {
+      setError("Please enter your email.");
+      return;
     }
-  };
+
+    if (!password) {
+      setError("Please enter your password.");
+      return;
+    }
+
+    const data = await loginUserApi({
+      email: cleanEmail,
+      password,
+    });
+
+    await saveToken(data.token);
+
+    router.replace("/(tabs)");
+  } catch (error) {
+    console.log("Login error:", error);
+
+    const message =
+      error.response?.data?.message || "Something went wrong while logging in.";
+
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleRegister = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const cleanName = name.trim();
-      const cleanEmail = email.trim().toLowerCase();
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
 
-      if (!cleanName) {
-        setError("Please enter your name.");
-        return;
-      }
-
-      if (!cleanEmail) {
-        setError("Please enter your email.");
-        return;
-      }
-
-      if (!password) {
-        setError("Please enter your password.");
-        return;
-      }
-
-      if (password.length < 8) {
-        setError("Password must be at least 8 characters.");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        setError("Passwords do not match.");
-        return;
-      }
-
-      console.log("Registering user:", {
-        name: cleanName,
-        email: cleanEmail,
-        password,
-      });
-
-      // Later this will call your backend:
-      // POST http://localhost:5020/api/auth/register
-
-      // Example future payload:
-      // const response = await fetch(`${API_URL}/api/auth/register`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     name: cleanName,
-      //     email: cleanEmail,
-      //     password,
-      //   }),
-      // });
-
-      router.replace("/(tabs)");
-    } catch (error) {
-      console.log("Register error:", error);
-      setError("Something went wrong while creating your account.");
-    } finally {
-      setLoading(false);
+    if (!cleanName) {
+      setError("Please enter your name.");
+      return;
     }
-  };
+
+    if (!cleanEmail) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter your password.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    const data = await registerUserApi({
+      name: cleanName,
+      email: cleanEmail,
+      password,
+    });
+
+    await saveToken(data.token);
+
+    router.replace("/(tabs)");
+  } catch (error) {
+    console.log("Register error:", error);
+
+    const message =
+      error.response?.data?.message ||
+      "Something went wrong while creating your account.";
+
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSubmit = () => {
     if (mode === "login") {
