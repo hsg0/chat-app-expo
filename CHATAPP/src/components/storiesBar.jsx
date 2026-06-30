@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
+import Avatar from "./avatar";
+
 const storyData = [
   {
     id: "1",
@@ -21,21 +23,25 @@ const storyData = [
     id: "2",
     name: "Alex",
     image: null,
+    online: true,
   },
   {
     id: "3",
     name: "Maya",
     image: null,
+    online: false,
   },
   {
     id: "4",
     name: "Sam",
     image: null,
+    online: true,
   },
   {
     id: "5",
     name: "Chris",
     image: null,
+    online: false,
   },
 ];
 
@@ -47,8 +53,7 @@ const StoriesBar = () => {
     try {
       setUploading(true);
 
-      const permission =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (permission.status !== "granted") {
         Alert.alert(
@@ -74,25 +79,13 @@ const StoriesBar = () => {
       const newStory = {
         id: Date.now().toString(),
         name: "You",
-        image: { uri: selectedImage.uri },
+        image: selectedImage.uri,
         isCurrentUser: true,
       };
 
       setUserStories((currentStories) => [newStory, ...currentStories]);
 
       console.log("Selected story image:", selectedImage.uri);
-
-      // Later this is where we upload to backend/ImageKit/S3:
-      // const formData = new FormData();
-      // formData.append("story", {
-      //   uri: selectedImage.uri,
-      //   name: "story.jpg",
-      //   type: "image/jpeg",
-      // });
-      // await fetch(`${API_URL}/api/stories`, {
-      //   method: "POST",
-      //   body: formData,
-      // });
     } catch (error) {
       console.log("Story picker error:", error);
       Alert.alert("Error", "Something went wrong while choosing your story.");
@@ -127,18 +120,17 @@ const StoriesBar = () => {
             disabled={uploading}
           >
             <View style={styles.storyRing}>
-              {item.image ? (
-                <Image
-                  source={item.image}
-                  style={styles.storyImage}
-                  resizeMode="cover"
-                />
-              ) : (
-                <View style={styles.placeholderAvatar}>
-                  <Text style={styles.avatarText}>
-                    {item.isCurrentUser ? "+" : item.name.charAt(0).toUpperCase()}
-                  </Text>
+              {item.isCurrentUser && !item.image ? (
+                <View style={styles.addStoryCircle}>
+                  <Text style={styles.addStoryText}>+</Text>
                 </View>
+              ) : (
+                <Avatar
+                  name={item.name}
+                  size={58}
+                  online={item.online}
+                  src={item.image}
+                />
               )}
             </View>
 
@@ -186,13 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
 
-  storyImage: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-  },
-
-  placeholderAvatar: {
+  addStoryCircle: {
     width: 58,
     height: 58,
     borderRadius: 29,
@@ -201,10 +187,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  avatarText: {
+  addStoryText: {
     color: "#FFFFFF",
-    fontSize: 22,
+    fontSize: 30,
     fontWeight: "900",
+    marginTop: -2,
   },
 
   storyName: {

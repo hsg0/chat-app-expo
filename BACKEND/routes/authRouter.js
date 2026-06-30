@@ -7,32 +7,15 @@ import {
   loginUser,
   getCurrentUser,
   logoutUser,
+  getUsers,
+  searchUsers,
+  updateProfile,
 } from "../controllers/authController.js";
 
 import { protectUser } from "../middleware/authMiddleware.js";
+import multerLoader from "../config/multer.js";
 
 const authRouter = express.Router();
-
-/*
-  Base route in server.js:
-
-  app.use("/api/auth", authRouter);
-
-  Final routes become:
-
-  POST /api/auth/register
-  POST /api/auth/login
-  POST /api/auth/logout
-  GET  /api/auth/me
-*/
-
-// public routes
-authRouter.post("/register", registerUser);
-authRouter.post("/login", loginUser);
-
-// protected routes
-authRouter.post("/logout", protectUser, logoutUser);
-authRouter.get("/me", protectUser, getCurrentUser);
 
 // quick test route
 authRouter.get("/test", (req, res) => {
@@ -41,5 +24,25 @@ authRouter.get("/test", (req, res) => {
     message: "Auth router is working.",
   });
 });
+
+// public routes
+authRouter.post("/register", registerUser);
+authRouter.post("/login", loginUser);
+
+// protected auth routes
+authRouter.post("/logout", protectUser, logoutUser);
+authRouter.get("/me", protectUser, getCurrentUser);
+
+// protected user routes
+authRouter.get("/users", protectUser, getUsers);
+authRouter.get("/users/search", protectUser, searchUsers);
+
+// protected profile route with avatar upload
+authRouter.put(
+  "/profile",
+  protectUser,
+  multerLoader.single("avatar"),
+  updateProfile
+);
 
 export default authRouter;
