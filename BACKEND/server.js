@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import { connectDB, getDBStatus } from "./config/mongoDB.js";
 import authRouter from "./routes/authRouter.js";
+import mediaRouter from "./routes/mediaRouter.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(express.json());
 // Routes
 
 app.use("/api/auth", authRouter);
+app.use("/api/media", mediaRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({

@@ -419,6 +419,9 @@ export async function updateUserProfile(req, res) {
 //-----------------------------------------------------------------------
 // update profile name bio handle avatar
 
+//-----------------------------------------------------------------------
+// update profile name bio handle avatar
+
 export async function updateProfile(req, res) {
   try {
     const userId = req.user?.id;
@@ -430,41 +433,23 @@ export async function updateProfile(req, res) {
       });
     }
 
-    const { name, handle, bio } = req.body;
-    const file = req.file;
-
-    // ------------------------------------------------------
-    // 1. Check handle safely
-    // ------------------------------------------------------
+    const { name, handle, bio, avatar } = req.body;
 
     if (handle) {
-      try {
-        const cleanHandle = String(handle).trim().toLowerCase();
+      const cleanHandle = String(handle).trim().toLowerCase();
 
-        const existingUserWithHandle = await User.findOne({
-          handle: cleanHandle,
-          _id: { $ne: userId },
-        });
+      const existingUserWithHandle = await User.findOne({
+        handle: cleanHandle,
+        _id: { $ne: userId },
+      });
 
-        if (existingUserWithHandle) {
-          return res.status(400).json({
-            success: false,
-            message: "Handle is already taken.",
-          });
-        }
-      } catch (handleError) {
-        console.error("Handle check error:", handleError);
-
-        return res.status(500).json({
+      if (existingUserWithHandle) {
+        return res.status(400).json({
           success: false,
-          message: "Something went wrong while checking the handle.",
+          message: "Handle is already taken.",
         });
       }
     }
-
-    // ------------------------------------------------------
-    // 2. Find user
-    // ------------------------------------------------------
 
     const user = await User.findById(userId);
 
@@ -474,35 +459,6 @@ export async function updateProfile(req, res) {
         message: "User not found.",
       });
     }
-
-    // ------------------------------------------------------
-    // 3. Upload avatar safely
-    // ------------------------------------------------------
-
-    let avatarUrl = "";
-
-    if (file) {
-      try {
-        const uploadedImage = await imageKitClient.upload({
-          file: file.buffer,
-          fileName: `avatar-${userId}-${Date.now()}.jpg`,
-          folder: "/chatapp/avatars",
-        });
-
-        avatarUrl = uploadedImage.url;
-      } catch (uploadError) {
-        console.error("Avatar upload error:", uploadError);
-
-        return res.status(500).json({
-          success: false,
-          message: "Something went wrong while uploading the avatar.",
-        });
-      }
-    }
-
-    // ------------------------------------------------------
-    // 4. Update user fields
-    // ------------------------------------------------------
 
     if (name) {
       user.name = String(name).trim();
@@ -516,8 +472,8 @@ export async function updateProfile(req, res) {
       user.bio = String(bio).trim();
     }
 
-    if (avatarUrl) {
-      user.avatar = avatarUrl;
+    if (avatar) {
+      user.avatar = String(avatar).trim();
     }
 
     await user.save();
@@ -536,4 +492,3 @@ export async function updateProfile(req, res) {
     });
   }
 }
-
