@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Alert,
   FlatList,
-  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -11,6 +10,8 @@ import {
 import * as ImagePicker from "expo-image-picker";
 
 import Avatar from "./avatar";
+import { getToken } from "../api/authStorage";
+import { uploadMediaToImageKit } from "../api/imageKitUploadApi";
 
 const storyData = [
   {
@@ -53,6 +54,13 @@ const StoriesBar = () => {
     try {
       setUploading(true);
 
+      const token = await getToken();
+
+      if (!token) {
+        Alert.alert("Login needed", "Please log in before uploading a story.");
+        return;
+      }
+
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (permission.status !== "granted") {
@@ -67,7 +75,7 @@ const StoriesBar = () => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 1,
+        quality: 0.8,
       });
 
       if (result.canceled) {
@@ -76,19 +84,31 @@ const StoriesBar = () => {
 
       const selectedImage = result.assets[0];
 
+      const uploadedMedia = await uploadMediaToImageKit({
+        token,
+        uri: selectedImage.uri,
+        kind: "image",
+        folder: "/chatapp/stories",
+      });
+
       const newStory = {
-        id: Date.now().toString(),
+        id: uploadedMedia.fileId || Date.now().toString(),
         name: "You",
-        image: selectedImage.uri,
+        image: uploadedMedia.url,
         isCurrentUser: true,
+        media: uploadedMedia,
       };
 
       setUserStories((currentStories) => [newStory, ...currentStories]);
 
-      console.log("Selected story image:", selectedImage.uri);
+      console.log("Story uploaded:", uploadedMedia.url);
     } catch (error) {
-      console.log("Story picker error:", error);
-      Alert.alert("Error", "Something went wrong while choosing your story.");
+      console.log("Story upload error:", error);
+
+      const message =
+        error.response?.data?.message || error.message || "Story upload failed.";
+
+      Alert.alert("Upload error", message);
     } finally {
       setUploading(false);
     }
@@ -137,7 +157,7 @@ const StoriesBar = () => {
             <Text numberOfLines={1} style={styles.storyName}>
               {item.isCurrentUser && !item.image
                 ? uploading
-                  ? "Loading"
+                  ? "Uploading"
                   : "Add"
                 : item.name}
             </Text>

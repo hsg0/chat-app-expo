@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
     _id: {
       type: String,
       required: true,
-      unique: true,
     },
 
     name: {
@@ -25,12 +24,13 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       maxlength: 120,
     },
+
     passwordHash: {
-        type: String,
-        required: true,
-        minlength: 6,
-        maxlength: 1024,
-      },
+      type: String,
+      required: true,
+      minlength: 6,
+      maxlength: 1024,
+    },
 
     handle: {
       type: String,
