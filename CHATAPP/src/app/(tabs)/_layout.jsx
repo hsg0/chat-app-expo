@@ -30,9 +30,10 @@ export default function TabsLayout() {
         {/* Visible bottom tabs */}
 
         <Tabs.Screen
-          name="uplink"
+          name="(uplink)"
           options={{
             title: "Uplink",
+            href: "/(tabs)/(uplink)/uplink",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="radio-outline" size={size} color={color} />
             ),
@@ -40,9 +41,10 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
-          name="calls"
+          name="(calls)"
           options={{
             title: "Calls",
+            href: "/(tabs)/(calls)/calls",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="call-outline" size={size} color={color} />
             ),
@@ -50,9 +52,13 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
-          name="plus"
+          name="(plus)"
           options={{
             title: "Plus",
+            href: "/(tabs)/(plus)/plus",
+            tabBarStyle: {
+              display: "none",
+            },
             tabBarIcon: ({ color, size }) => (
               <Ionicons
                 name="add-circle-outline"
@@ -64,9 +70,10 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
-          name="index"
+          name="(messages)"
           options={{
             title: "Messages",
+            href: "/(tabs)/(messages)/messages",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="chatbubbles-outline" size={size} color={color} />
             ),
@@ -74,9 +81,10 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
-          name="search"
+          name="(search)"
           options={{
             title: "Search",
+            href: "/(tabs)/(search)/search",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search-outline" size={size} color={color} />
             ),
@@ -86,9 +94,26 @@ export default function TabsLayout() {
         {/* Hidden drawer/private pages */}
 
         <Tabs.Screen
+          name="index"
+          options={{
+            href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
           name="profile"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="person-circle-outline"
+                size={size}
+                color={color}
+              />
+            ),
           }}
         />
 
@@ -96,6 +121,9 @@ export default function TabsLayout() {
           name="settings"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="settings-outline" size={size} color={color} />
+            ),
           }}
         />
 
@@ -103,6 +131,9 @@ export default function TabsLayout() {
           name="terms"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="document-text-outline" size={size} color={color} />
+            ),
           }}
         />
 
@@ -110,6 +141,13 @@ export default function TabsLayout() {
           name="privacy"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="shield-checkmark-outline"
+                size={size}
+                color={color}
+              />
+            ),
           }}
         />
 
@@ -117,6 +155,9 @@ export default function TabsLayout() {
           name="agreements"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="reader-outline" size={size} color={color} />
+            ),
           }}
         />
 
@@ -124,6 +165,9 @@ export default function TabsLayout() {
           name="help"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="help-circle-outline" size={size} color={color} />
+            ),
           }}
         />
 
@@ -131,6 +175,9 @@ export default function TabsLayout() {
           name="logout"
           options={{
             href: null,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="log-out-outline" size={size} color={color} />
+            ),
           }}
         />
       </Tabs>

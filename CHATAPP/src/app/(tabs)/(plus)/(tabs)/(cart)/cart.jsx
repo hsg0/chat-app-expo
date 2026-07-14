@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function ProfileScreen() {
+export default function PlusCartScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>profile</Text>
+      <Text style={styles.text}>plus cart</Text>
     </View>
   );
 }
@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "700",
     color: "#111827",
   },
 });

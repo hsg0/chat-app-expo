@@ -1,14 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-const privacy = () => {
+export default function PrivacyScreen() {
   return (
-    <View>
-      <Text>privacy</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>privacy</Text>
     </View>
-  )
+  );
 }
 
-export default privacy
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#111827",
+  },
+});

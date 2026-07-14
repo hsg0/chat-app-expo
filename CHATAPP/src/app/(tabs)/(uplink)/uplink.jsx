@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function ProfileScreen() {
+export default function UplinkScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>profile</Text>
+      <Text style={styles.text}>uplink</Text>
     </View>
   );
 }

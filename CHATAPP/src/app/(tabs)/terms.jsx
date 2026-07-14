@@ -1,14 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-const terms = () => {
+export default function TermsScreen() {
   return (
-    <View>
-      <Text>terms</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>terms</Text>
     </View>
-  )
+  );
 }
 
-export default terms
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#111827",
+  },
+});
