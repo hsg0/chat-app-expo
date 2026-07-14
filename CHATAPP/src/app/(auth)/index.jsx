@@ -81,7 +81,7 @@ const AuthIndex = () => {
 
     await saveToken(data.token);
 
-    router.replace("/(tabs)");
+    router.replace("/(tabs)/(messages)/messages");
   } catch (error) {
     console.log("Login error:", error);
 
@@ -135,7 +135,7 @@ const AuthIndex = () => {
 
     await saveToken(data.token);
 
-    router.replace("/(tabs)");
+    router.replace("/(tabs)/(messages)/messages");
   } catch (error) {
     console.log("Register error:", error);
 
