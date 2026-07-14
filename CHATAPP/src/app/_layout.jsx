@@ -7,6 +7,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { Provider } from "react-redux";
+
+import store from "../reduxSetup/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,18 +19,20 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen
-          name="chat"
-          options={{ animation: "slide_from_right" }}
-        />
-      </Stack>
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen
+            name="chat"
+            options={{ animation: "slide_from_right" }}
+          />
+        </Stack>
 
-      <StatusBar style="dark" />
-    </GestureHandlerRootView>
+        <StatusBar style="dark" />
+      </GestureHandlerRootView>
+    </Provider>
   );
 }

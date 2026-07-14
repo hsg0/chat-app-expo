@@ -1,10 +1,31 @@
-import { Stack } from "expo-router";
+import { Drawer } from "expo-router/drawer";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function PlusLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="plus" />
-    </Stack>
+    <Drawer
+      screenOptions={{
+        headerShown: false,
+        drawerType: "front",
+      }}
+    >
+      <Drawer.Screen
+        name="(tabs)"
+        options={{
+          title: "Shop",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="storefront-outline" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="plus"
+        options={{
+          title: "Plus Entry",
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+    </Drawer>
   );
 }
