@@ -10,6 +10,10 @@ import jwt from "jsonwebtoken";
 import { connectDB, getDBStatus } from "./config/mongoDB.js";
 import authRouter from "./routes/authRouter.js";
 import mediaRouter from "./routes/mediaRouter.js";
+import storeRouter from "./routes/storeRouter.js";
+import otcProductRouter from "./routes/mobile/otcProductRoutes.js";
+
+
 
 dotenv.config();
 
@@ -117,6 +121,10 @@ io.on("connection", (socket) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/media", mediaRouter);
+
+app.use("/api/store", storeRouter);
+app.use("/api/mobile/otc/products", otcProductRouter);
+//
 
 app.get("/", (req, res) => {
   res.status(200).json({
