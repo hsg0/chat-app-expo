@@ -1,10 +1,10 @@
 // BACKEND/server.js
+import "dotenv/config";
 import { Server } from "socket.io";
 import http from "http";
 import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
 import { connectDB, getDBStatus } from "./config/mongoDB.js";
@@ -12,10 +12,10 @@ import authRouter from "./routes/authRouter.js";
 import mediaRouter from "./routes/mediaRouter.js";
 import storeRouter from "./routes/storeRouter.js";
 import otcProductRouter from "./routes/mobile/otcProductRoutes.js";
-
-
-
-dotenv.config();
+import pubmedRagRouter from "./routes/pubmedRagRouter.js";
+import chatAppRouter from "./routes/chatAppRouter.js";
+import practiceMedicationChatRouter from "./routes/practiceMedicationChatRoutes.js";
+import practiceStripeRoutes from "./routes/practiceStripeRoutes.js";
 
 const app = express();
 
@@ -124,7 +124,11 @@ app.use("/api/media", mediaRouter);
 
 app.use("/api/store", storeRouter);
 app.use("/api/mobile/otc/products", otcProductRouter);
+app.use("/api/rag/pubmed", pubmedRagRouter);
+app.use("/api/practice-medications", practiceMedicationChatRouter);
+app.use("/api/practice/stripe", practiceStripeRoutes);
 //
+app.use("/api/chat", chatAppRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({

@@ -83,10 +83,10 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="(search)"
           options={{
-            title: "Search",
+            title: "RAG",
             href: "/(tabs)/(search)/search",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="search-outline" size={size} color={color} />
+              <Ionicons name="flask-outline" size={size} color={color} />
             ),
           }}
         />

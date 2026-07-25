@@ -63,10 +63,10 @@ export default function PlusTabsLayout() {
           <Tabs.Screen
             name="(add)"
             options={{
-              title: "Add",
+              title: "Chat",
               href: "/(tabs)/(plus)/(tabs)/(add)/add",
               tabBarIcon: ({ color, size }) => (
-                <Ionicons name="add-circle-outline" size={size} color={color} />
+                <Ionicons name="chatbubbles-outline" size={size} color={color} />
               ),
             }}
           />

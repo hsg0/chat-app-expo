@@ -1,4 +1,17 @@
 // BACKEND/models/user.js
+//
+// WHAT:
+// Defines the MongoDB structure for application users.
+//
+// WHY:
+// Stores authentication and public profile information for each user.
+//
+// HOW:
+// Each user is stored in the users collection.
+//
+// IMPORTANT:
+// Passwords must never be stored directly.
+// Only the secure password hash is stored in passwordHash.
 
 import mongoose from "mongoose";
 
@@ -62,9 +75,14 @@ const userSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    collection: "users",
+  }
 );
 
-const User = mongoose.model("User", userSchema);
+const User =
+  mongoose.models.User ||
+  mongoose.model("User", userSchema);
 
 export default User;
