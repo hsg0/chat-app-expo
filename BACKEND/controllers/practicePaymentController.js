@@ -52,6 +52,7 @@ function mapStripePaymentStatus(stripeStatus) {
 function buildSafePayment(payment) {
   return {
     paymentId: payment.paymentId,
+    userEmail: payment.userEmail,
     productCode: payment.productCode,
     productName: payment.productName,
     amount: payment.amount,
@@ -319,6 +320,42 @@ export async function getPracticePaymentStatus(
         success: false,
         message: "Payment not found.",
       });
+    }
+
+    // Refresh non-terminal status from Stripe until webhooks are wired.
+    if (
+      payment.stripePaymentIntentId &&
+      !["succeeded", "failed", "cancelled", "refunded"].includes(
+        payment.status
+      )
+    ) {
+      try {
+        const paymentIntent =
+          await practiceStripe.paymentIntents.retrieve(
+            payment.stripePaymentIntentId
+          );
+
+        const mappedStatus = mapStripePaymentStatus(paymentIntent.status);
+
+        if (mappedStatus !== payment.status) {
+          payment.status = mappedStatus;
+
+          if (mappedStatus === "succeeded" && !payment.paidAt) {
+            payment.paidAt = new Date();
+          }
+
+          if (mappedStatus === "cancelled" && !payment.cancelledAt) {
+            payment.cancelledAt = new Date();
+          }
+
+          await payment.save();
+        }
+      } catch (stripeError) {
+        console.error(
+          "[PRACTICE PAYMENT] Could not refresh PaymentIntent status:",
+          stripeError?.message || stripeError
+        );
+      }
     }
 
     return res.status(200).json({

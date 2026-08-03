@@ -16,6 +16,7 @@ import pubmedRagRouter from "./routes/pubmedRagRouter.js";
 import chatAppRouter from "./routes/chatAppRouter.js";
 import practiceMedicationChatRouter from "./routes/practiceMedicationChatRoutes.js";
 import practiceStripeRoutes from "./routes/practiceStripeRoutes.js";
+import practicePaymentRoutes from "./routes/practicePaymentRoutes.js";
 
 const app = express();
 
@@ -127,6 +128,7 @@ app.use("/api/mobile/otc/products", otcProductRouter);
 app.use("/api/rag/pubmed", pubmedRagRouter);
 app.use("/api/practice-medications", practiceMedicationChatRouter);
 app.use("/api/practice/stripe", practiceStripeRoutes);
+app.use("/api/practice/payments", practicePaymentRoutes);
 //
 app.use("/api/chat", chatAppRouter);
 
